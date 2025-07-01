@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../services/api_service.dart';
 import '../services/audio_service.dart';
 import '../models/practice_question.dart';
-import '../models/analysis_result.dart';
 
 class PracticeScreen extends StatefulWidget {
   const PracticeScreen({super.key});
@@ -19,8 +18,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
   String _selectedDifficulty = 'intermediate';
   bool _isLoading = false;
   bool _isRecording = false;
-  String? _transcription;
-  AnalysisResult? _analysisResult;
 
   final TextEditingController _textController = TextEditingController();
 
@@ -114,7 +111,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
       );
 
       setState(() {
-        _transcription = transcription;
         _textController.text = transcription;
       });
 
@@ -147,7 +143,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
       );
 
       setState(() {
-        _analysisResult = result;
       });
 
       // Navigate to results screen

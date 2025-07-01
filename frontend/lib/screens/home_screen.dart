@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadStats() async {
     try {
       final apiService = Provider.of<ApiService>(context, listen: false);
-      final authService = Provider.of<AuthService>(context, listen: false);
+      Provider.of<AuthService>(context, listen: false);
       
       // For demo purposes, use a dummy user ID
       const userId = 'demo_user_123';

@@ -7,33 +7,33 @@ import 'package:path_provider/path_provider.dart';
 class AudioService {
   final AudioRecorder _recorder = AudioRecorder();
   final AudioPlayer _player = AudioPlayer();
-  
+
   bool _isRecording = false;
   bool _isPlaying = false;
   String? _currentRecordingPath;
-  
+
   // Getters
   bool get isRecording => _isRecording;
   bool get isPlaying => _isPlaying;
   String? get currentRecordingPath => _currentRecordingPath;
-  
+
   // Request microphone permission
   Future<bool> requestPermission() async {
     final status = await Permission.microphone.request();
     return status == PermissionStatus.granted;
   }
-  
+
   // Start recording
   Future<bool> startRecording() async {
     try {
       if (!await requestPermission()) {
         throw Exception('Microphone permission denied');
       }
-      
+
       final directory = await getApplicationDocumentsDirectory();
       final fileName = 'recording_${DateTime.now().millisecondsSinceEpoch}.wav';
       _currentRecordingPath = '${directory.path}/$fileName';
-      
+
       await _recorder.start(
         const RecordConfig(
           encoder: AudioEncoder.wav,
@@ -42,14 +42,14 @@ class AudioService {
         ),
         path: _currentRecordingPath!,
       );
-      
+
       _isRecording = true;
       return true;
     } catch (e) {
       throw Exception('Failed to start recording: $e');
     }
   }
-  
+
   // Stop recording
   Future<String?> stopRecording() async {
     try {
@@ -60,13 +60,13 @@ class AudioService {
       throw Exception('Failed to stop recording: $e');
     }
   }
-  
+
   // Play audio file
   Future<void> playAudio(String filePath) async {
     try {
       await _player.play(DeviceFileSource(filePath));
       _isPlaying = true;
-      
+
       _player.onPlayerComplete.listen((_) {
         _isPlaying = false;
       });
@@ -74,7 +74,7 @@ class AudioService {
       throw Exception('Failed to play audio: $e');
     }
   }
-  
+
   // Stop audio playback
   Future<void> stopAudio() async {
     try {
@@ -84,7 +84,7 @@ class AudioService {
       throw Exception('Failed to stop audio: $e');
     }
   }
-  
+
   // Pause audio playback
   Future<void> pauseAudio() async {
     try {
@@ -94,7 +94,7 @@ class AudioService {
       throw Exception('Failed to pause audio: $e');
     }
   }
-  
+
   // Resume audio playback
   Future<void> resumeAudio() async {
     try {
@@ -104,7 +104,7 @@ class AudioService {
       throw Exception('Failed to resume audio: $e');
     }
   }
-  
+
   // Get audio duration
   Future<Duration?> getAudioDuration(String filePath) async {
     try {
@@ -114,7 +114,7 @@ class AudioService {
       return null;
     }
   }
-  
+
   // Dispose resources
   void dispose() {
     _recorder.dispose();
